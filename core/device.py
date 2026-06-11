@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 import subprocess
+import sys
 import time
 from typing import Optional
 
@@ -13,6 +14,9 @@ import uiautomator2 as u2
 import config
 
 logger = logging.getLogger(__name__)
+
+# 在 Windows 下避免打包为 windowed 应用时 subprocess 弹出黑色命令框
+_SUBPROCESS_FLAGS = subprocess.CREATE_NO_WINDOW if sys.platform == "win32" else 0
 
 
 class Device:
@@ -32,7 +36,13 @@ class Device:
 
     def _adb(self, *args: str) -> subprocess.CompletedProcess:
         cmd = [config.ADB_PATH, "-s", self.serial, *args]
-        return subprocess.run(cmd, capture_output=True, text=True, check=False)
+        return subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            check=False,
+            creationflags=_SUBPROCESS_FLAGS,
+        )
 
     def screenshot_bgr(self) -> np.ndarray:
         import cv2
@@ -101,6 +111,7 @@ class Device:
             capture_output=True,
             text=True,
             check=False,
+            creationflags=_SUBPROCESS_FLAGS,
         )
         time.sleep(config.EMULATOR_RESTART_WAIT_SEC)
 
@@ -109,6 +120,7 @@ class Device:
             [config.MUMU_EMULATOR_PATH],
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
+            creationflags=_SUBPROCESS_FLAGS,
         )
         # 等待 adb 就绪
         logger.info("等待模拟器启动 (adb 在线，最长 %ds)...", config.EMULATOR_BOOT_TIMEOUT)
@@ -119,6 +131,7 @@ class Device:
                 capture_output=True,
                 text=True,
                 check=False,
+                creationflags=_SUBPROCESS_FLAGS,
             )
             if "connected" in result.stdout.lower() or "already" in result.stdout.lower():
                 logger.info("模拟器 adb 已就绪")
