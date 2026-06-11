@@ -67,8 +67,8 @@ MENU_TOP_LEFT = (63, 54)
 MENU_COMMISSION = (72, 276)       # 委托
 
 LEVEL_SCROLL_POS = (678, 558)     # 等级列表滚动起点
-# 20/30/50 级 UI 相似，须先向下滑过再模板匹配
-LEVELS_SCROLL_DOWN_FIRST = (20, 30, 50)
+# 20/30/40/50/60 级 UI 相似，须先向下滑过再模板匹配
+LEVELS_SCROLL_DOWN_FIRST = (20, 30, 40, 50, 60)
 GO_SCROLL_POS = (1052, 532)       # 前往列表滚动起点（序号>go_per_page 时向上滑）
 # GO_PER_PAGE 由副本配置决定，见 core/dungeon_profile.py
 

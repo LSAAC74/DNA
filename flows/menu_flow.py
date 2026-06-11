@@ -167,7 +167,7 @@ class MenuFlow:
         sx, sy = config.LEVEL_SCROLL_POS
         if self.level in config.LEVELS_SCROLL_DOWN_FIRST:
             logger.info(
-                "等级 %d 与 50 级易混淆，先向下滑动列表 (%s, %s) 再检索",
+                "等级 %d 易与其他等级混淆，先向下滑动列表 (%s, %s) 再检索",
                 self.level,
                 sx,
                 sy,
